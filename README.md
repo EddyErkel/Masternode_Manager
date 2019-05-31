@@ -42,7 +42,7 @@
 # mnmanage.sh backupconf string         : Create backups of masternodename.conf to masternodename.conf.string
 # mnmanage.sh replace stringA stringB   : Replace stringA with stringB in masternodename.conf files (a backup copy of masternodenam.conf will be created)
 # 
-# mnmanage.sh '<cli-command(s)'>          : Execute masternode cli commands (like 'mn-cli masternode status', 'mn-cli getinfo')
+# mnmanage.sh \<cli-command(s)\>          : Execute masternode cli commands (like 'mn-cli masternode status', 'mn-cli getinfo')
 # mnmanage.sh masternode status         : Execute masternode cli command 'masternode status' (nonverbose/compact output)
 # mnmanage.sh masternode status verbose : Execute masternode cli command 'masternode status' (normal/verbose output)
 # 
