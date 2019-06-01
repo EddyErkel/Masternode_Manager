@@ -31,25 +31,25 @@ then
 	echo "Command options: status, stop, start, restart, enable, disable, list, showconf, backupconf, replace, <cli-command(s)>"
 	echo
     echo
-	echo "Usage: mnmanage.sh [command] <option> <option>"
+	echo "Usage: mnmanager.sh [command] <option> <option>"
 	echo
-    echo "mnmanage.sh help                      : Display help text"
-    echo "mnmanage.sh status                    : Display masternode services status (nonverbose/compact output)"
-    echo "mnmanage.sh status verbose            : Display masternode services status (normal/verbose output)"
-    echo "mnmanage.sh stop                      : Stop masternode services"
-    echo "mnmanage.sh start                     : Start masternode services, followed by a short delay between masternodes"
-    echo "mnmanage.sh restart                   : Stop and start masternode services, followed by a short delay between masternodes"
-    echo "mnmanage.sh enable                    : Enable autostart of masternode services (not recommended with many masternodes on same server)" 
-    echo "mnmanage.sh disable                   : Disable masternode services"
-    echo "mnmanage.sh list                      : List masternode.service and masternode-cli files"
-    echo "mnmanage.sh showconf                  : Type contents of masternodename.conf files"    
-    echo "mnmanage.sh backupconf                : Create backups of masternodename.conf to masternodename.conf.yymmdd_hhmmss"
-    echo "mnmanage.sh backupconf string         : Create backups of masternodename.conf to masternodename.conf.string"
-    echo "mnmanage.sh replace stringA stringB   : Replace stringA with stringB in masternodename.conf files (a backup copy of masternodenam.conf will be created)"
+    echo "mnmanager.sh help                      : Display help text"
+    echo "mnmanager.sh status                    : Display masternode services status (nonverbose/compact output)"
+    echo "mnmanager.sh status verbose            : Display masternode services status (normal/verbose output)"
+    echo "mnmanager.sh stop                      : Stop masternode services"
+    echo "mnmanager.sh start                     : Start masternode services, followed by a short delay between masternodes"
+    echo "mnmanager.sh restart                   : Stop and start masternode services, followed by a short delay between masternodes"
+    echo "mnmanager.sh enable                    : Enable autostart of masternode services (not recommended with many masternodes on same server)" 
+    echo "mnmanager.sh disable                   : Disable masternode services"
+    echo "mnmanager.sh list                      : List masternode.service and masternode-cli files"
+    echo "mnmanager.sh showconf                  : Type contents of masternodename.conf files"    
+    echo "mnmanager.sh backupconf                : Create backups of masternodename.conf to masternodename.conf.yymmdd_hhmmss"
+    echo "mnmanager.sh backupconf string         : Create backups of masternodename.conf to masternodename.conf.string"
+    echo "mnmanager.sh replace stringA stringB   : Replace stringA with stringB in masternodename.conf files (a backup copy of masternodenam.conf will be created)"
     echo
-    echo "mnmanage.sh <cli-command(s)>          : Execute masternode cli commands (like 'mn-cli masternode status', 'mn-cli getinfo')"
-    echo "mnmanage.sh masternode status         : Execute masternode cli command 'masternode status' (nonverbose/compact output)"
-    echo "mnmanage.sh masternode status verbose : Execute masternode cli command 'masternode status' (normal/verbose output)"
+    echo "mnmanager.sh <cli-command(s)>          : Execute masternode cli commands (like 'mn-cli masternode status', 'mn-cli getinfo')"
+    echo "mnmanager.sh masternode status         : Execute masternode cli command 'masternode status' (nonverbose/compact output)"
+    echo "mnmanager.sh masternode status verbose : Execute masternode cli command 'masternode status' (normal/verbose output)"
     echo
     echo "*** Be carefull, commands are executed for all your masternodes! ***"
     echo
@@ -236,7 +236,7 @@ then
         then
             echo "Provide search and replace variable value."
             echo
-            echo "Example: mnmanage.sh replace 12.34.56.78 98.76.54.32"
+            echo "Example: mnmanager.sh replace 12.34.56.78 98.76.54.32"
             echo
             echo
             exit 1

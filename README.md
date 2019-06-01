@@ -26,25 +26,25 @@
 # Command options: status, stop, start, restart, enable, disable, list, showconf, backupconf, replace, cli-command(s)
 # 
 # 
-# Usage: mnmanage.sh [command] <option> <option>
+# Usage: mnmanager.sh [command] <option> <option>
 # 
-# mnmanage.sh help                      : Display help text
-# mnmanage.sh status                    : Display masternode services status (nonverbose/compact output)
-# mnmanage.sh status verbose            : Display masternode services status (normal/verbose output)
-# mnmanage.sh stop                      : Stop masternode services
-# mnmanage.sh start                     : Start masternode services, followed by a short delay between masternodes
-# mnmanage.sh restart                   : Stop and start masternode services, followed by a short delay between masternodes
-# mnmanage.sh enable                    : Enable autostart of masternode services (not recommended with many masternodes on same server)
-# mnmanage.sh disable                   : Disable masternode services
-# mnmanage.sh list                      : List masternode.service and masternode-cli files
-# mnmanage.sh showconf                  : Type contents of masternodename.conf files
-# mnmanage.sh backupconf                : Create backups of masternodename.conf to masternodename.conf.yymmdd_hhmmss
-# mnmanage.sh backupconf string         : Create backups of masternodename.conf to masternodename.conf.string
-# mnmanage.sh replace stringA stringB   : Replace stringA with stringB in masternodename.conf files (a backup copy of masternodenam.conf will be created)
+# mnmanager.sh help                      : Display help text
+# mnmanager.sh status                    : Display masternode services status (nonverbose/compact output)
+# mnmanager.sh status verbose            : Display masternode services status (normal/verbose output)
+# mnmanager.sh stop                      : Stop masternode services
+# mnmanager.sh start                     : Start masternode services, followed by a short delay between masternodes
+# mnmanager.sh restart                   : Stop and start masternode services, followed by a short delay between masternodes
+# mnmanager.sh enable                    : Enable autostart of masternode services (not recommended with many masternodes on same server)
+# mnmanager.sh disable                   : Disable masternode services
+# mnmanager.sh list                      : List masternode.service and masternode-cli files
+# mnmanager.sh showconf                  : Type contents of masternodename.conf files
+# mnmanager.sh backupconf                : Create backups of masternodename.conf to masternodename.conf.yymmdd_hhmmss
+# mnmanager.sh backupconf string         : Create backups of masternodename.conf to masternodename.conf.string
+# mnmanager.sh replace stringA stringB   : Replace stringA with stringB in masternodename.conf files (a backup copy of masternodenam.conf will be created)
 # 
-# mnmanage.sh cli-command(s)            : Execute masternode cli commands (like 'mn-cli masternode status', 'mn-cli getinfo')
-# mnmanage.sh masternode status         : Execute masternode cli command 'masternode status' (nonverbose/compact output)
-# mnmanage.sh masternode status verbose : Execute masternode cli command 'masternode status' (normal/verbose output)
+# mnmanager.sh cli-command(s)            : Execute masternode cli commands (like 'mn-cli masternode status', 'mn-cli getinfo')
+# mnmanager.sh masternode status         : Execute masternode cli command 'masternode status' (nonverbose/compact output)
+# mnmanager.sh masternode status verbose : Execute masternode cli command 'masternode status' (normal/verbose output)
 # 
 # *** Be carefull, commands are executed for all your masternodes! ***
 </pre>
