@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to manage all masternodes at once and is dupmn aware
 # Created by Eddy Erkel
-# Version 0.1 31-05-2019
+# Version 0.2 18-08-2019
 #
 # Disclamer:
 # This script is provided "as is", without warranty of any kind.
@@ -61,7 +61,8 @@ fi
 # Set variables
 date=$(date +"%Y%m%d_%H%M%S")	# set date variable
 delay=5                         # set delay variable, used so masternodes start sequentially
-maxwait=60                      # set maximum time to wait for a masternode to start, continue to next if maxwait is reached
+maxwait=180                     # set maximum time to wait for a masternode to start, continue to next if maxwait is reached
+retry=3                         # number of times to check before continuing to next masternode
 command=$1                      # first input parameter             
 option=$2                       # second input parameter
 
@@ -116,15 +117,46 @@ then
                 while [ $errorlevel -gt 0 ]
                 do
                     for ((i=$delay; i>=0; i--)); do echo -ne "."; sleep 1; done;
-                    result=$(eval $mncli masternode status 2>&1 >/dev/null | egrep "Loading|error" | grep capable)
+                    result=$(eval $mncli masternode status 2>&1 >/dev/null | egrep "Loading|error" | egrep "couldn't connect to server|no response from server|capable masternode")
+                    
+                    # error: {"code":-28,"message":"Verifying wallet..."}
+                    # error: {"code":-28,"message":"Loading block index..."}
+                    # error: {"code":-1,"message":"Masternode not found in the list of available masternodes. Current status: Node just started, not yet activated"}
+                    # error: {"code":-1,"message":"Masternode not found in the list of available masternodes. Current status: Not capable masternode: Hot node, waiting for remote activation."}
+                    # error: couldn't connect to server
+                    # error: no response from server
+                    
                     errorlevel=$?
+                    if [ $errorlevel -eq 0 ]
+                    then
+                        # Double check
+                        sleep 2
+                        result=$(eval $mncli masternode status 2>&1 >/dev/null | egrep "Loading|error" | egrep "couldn't connect to server|no response from server|capable masternode")
+                        errorlevel=$?
+                    fi
                     maxwait=$((maxwait-$delay))
                     if [ $maxwait -le 0 ]; then errorlevel=0; fi
                 done
                 echo -en "\\r"
                 systemctl status ${service} | egrep "Active: inactive|Active: failed|Active: active"
+                result=$(eval ${mncli} masternode status 2>&1 | egrep 'error|message|capable' | sed "s/^[ \t]*//" )
+                                            
+                if [[ -z $result  ]]
+                then 
+                    result=$(eval ${mncli} ${command} ${option} 2>&1 | grep 'status' | sed "s/^[ \t]*//" )
+                fi
+                            
+                echo "   ${result}"
              else
                 systemctl status ${service} | grep "Active: active"
+                result=$(eval ${mncli} masternode status 2>&1 | egrep 'error|message|capable' | sed "s/^[ \t]*//" )
+                                                            
+                if [[ -z $result  ]]
+                then 
+                    result=$(eval ${mncli} ${command} ${option} 2>&1 | grep 'status' | sed "s/^[ \t]*//" )
+                fi
+                 
+                echo "   ${result}"
             fi
         done
     fi
@@ -135,6 +167,7 @@ then
     then
         for service in $(ls --file /etc/systemd/system/*.service | grep -v @ | xargs -n 1 basename | sort -V )
         do
+            mncli=$(cat /etc/systemd/system/${service} | grep ExecStop | sed -e 's/ExecStop=//' -e 's/ stop//')
             echo
             echo -e "\e[92msystemctl stop ${service}\e[0m"
             systemctl stop ${service}
@@ -142,17 +175,54 @@ then
             echo -e "\e[92msystemctl start ${service}\e[0m"
             systemctl start ${service} 2>&1 >/dev/null
             
+            #errorlevel=1
+            #while [ $errorlevel -gt 0 ]
+            #do
+            #    for ((i=$delay; i>=0; i--)); do echo -ne "."; sleep 1; done;
+            #    result=$(eval $mncli masternode status)
+            #    errorlevel=$?
+            #    maxwait=$((maxwait-$delay))
+             #   if [ $maxwait -le 0 ]; then errorlevel=0; fi
+            #done
+            
             errorlevel=1
             while [ $errorlevel -gt 0 ]
             do
                 for ((i=$delay; i>=0; i--)); do echo -ne "."; sleep 1; done;
-                result=$(eval $mncli master)
+                result=$(eval $mncli masternode status 2>&1 >/dev/null | egrep "Loading|error" | egrep "couldn't connect to server|no response from server|capable masternode")
+                
+                # error: {"code":-28,"message":"Verifying wallet..."}
+                # error: {"code":-28,"message":"Loading block index..."}
+                # error: {"code":-1,"message":"Masternode not found in the list of available masternodes. Current status: Node just started, not yet activated"}
+                # error: {"code":-1,"message":"Masternode not found in the list of available masternodes. Current status: Not capable masternode: Hot node, waiting for remote activation."}
+                # error: couldn't connect to server
+                # error: no response from server
+                
                 errorlevel=$?
+                if [ $errorlevel -eq 0 ]
+                then
+                    # Double check
+                    sleep 2
+                    result=$(eval $mncli masternode status 2>&1 >/dev/null | egrep "Loading|error" | egrep "couldn't connect to server|no response from server|capable masternode")
+                    errorlevel=$?
+                fi
                 maxwait=$((maxwait-$delay))
                 if [ $maxwait -le 0 ]; then errorlevel=0; fi
             done
+            
+            
+            
+            
             echo -en "\\r"
             systemctl status ${service} | egrep "Active: inactive|Active: failed|Active: active"
+            result=$(eval ${mncli} masternode status 2>&1 | egrep 'error|message|capable' | sed "s/^[ \t]*//" )
+                            
+            if [[ -z $result  ]]
+            then 
+                result=$(eval ${mncli} ${command} ${option} 2>&1 | grep 'status' | sed "s/^[ \t]*//" )
+            fi
+            
+            echo "   ${result}"
         done
     fi
 
@@ -276,6 +346,12 @@ else
                 eval ${cli} ${command} ${option}
             else
                 result=$(eval ${cli} ${command} ${option} 2>&1 | egrep 'error|message|capable' | sed "s/^[ \t]*//" )
+                
+                if [[ -z $result  ]]
+                then 
+                    result=$(eval ${cli} ${command} ${option} 2>&1 | grep 'status' | sed "s/^[ \t]*//" )
+                fi
+               
                 printf '\e[1;92m%-40s\e[0m %s\n' "${cli} ${command} ${option}" "${result}"
             fi
         done
