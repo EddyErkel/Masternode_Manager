@@ -233,7 +233,7 @@ then
         ls --file /etc/systemd/system/*.service | grep -v @ | sort -V
         echo
         
-        mncli=$(ls --file /usr/bin/*-cli-*; ls --file /usr/local/bin/*-cli)
+        mncli=$(ls --file /usr/bin/*-cli-* 2>/dev/null; ls --file /usr/local/bin/*-cli 2>/dev/null)
         echo ${mncli[@]} | tr " " "\n" | sort -V
         echo
         for conf in $(find /home/ -name '*.conf' | egrep -v 'masternode|dupmn' | sort -V)
@@ -332,7 +332,7 @@ then
     
     
 else
-    mncli=$(ls --file /usr/bin/*-cli-* | egrep -v 'cli-0|cli-all' | xargs -n 1 basename; ls --file /usr/local/bin/*-cli | grep -v all | xargs -n 1 basename)
+    mncli=$(ls --file /usr/bin/*-cli-* 2>/dev/null | egrep -v 'cli-0|cli-all' | xargs -n 1 basename 2>/dev/null; ls --file /usr/local/bin/*-cli 2>/dev/null | grep -v all | xargs -n 1 basename 2>/dev/null)
     mncli=($(echo ${mncli[@]} | tr " " "\n" | sort -V))  
 
     if [[ "${command}" == "masternode" && "${option}" == "status" ]]    
